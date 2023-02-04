@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post{% endblock %}
+
+{% block body %}
+    <h1>{{ post.title }}</h1>
+
+    <p class="text-muted">
+        {{ post.createdAt|date('F j, Y') }} by
+        <a href="#">{{ post.author }}</a>
+    </p>
+
+    <p>{{ post.content }}</p>
+
+    <a href="{{ path('app_post_index') }}">back to list</a>
+
+    {# <a href="{{ path('app_post_edit', {'id': post.id}) }}">edit</a>
+
+    {{ include('post/_delete_form.html.twig') }} #}
+{% endblock %}

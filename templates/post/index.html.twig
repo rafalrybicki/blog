@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block body %}
+    <h1>Posts</h1>
+
+    <div class="justify-content-between card-group">
+        {% for post in posts %}
+            <a href="{{ path('app_post_show', {'slug': post.slug}) }}" class="link-card">
+                <div class="card h-100" style="width: 18rem;">
+                    <img src="https://bi.im-g.pl/im/57/82/1b/z28845911ID,Pilne.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">{{ post.category }}</h6>
+                        <p class="card-text">{{ post.title }}</p>
+                    </div>
+                </div>
+            </a>
+        {% else %}
+            <p>no records found</p>
+        {% endfor %}
+    </div>
+
+    <a href="{{ path('app_post_new') }}">Create new</a>
+{% endblock %}
