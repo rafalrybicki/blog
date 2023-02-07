@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +22,17 @@ class PostController extends AbstractController
         $this->postRepository = $postRepository;
     }
 
-    #[Route('/', name: 'app_post_index', methods: ['GET'])]
-    public function index(): Response
+    #[Route('/{page<\d+>}', name: 'app_post_index', methods: ['GET'])]
+    public function index(int $page = 1): Response
     {
+        $queryBuilder = $this->postRepository->createOrderedByNewestQueryBuilder();
+
+        $pagerfanta = new Pagerfanta(new QueryAdapter($queryBuilder));
+        $pagerfanta->setCurrentPage($page);
+        $pagerfanta->setMaxPerPage(12);
+
         return $this->render('post/index.html.twig', [
-            'posts' => $this->postRepository->findAll(),
+            'pager' => $pagerfanta,
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,11 +40,13 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
-
-    public function findAll()
+    public function createOrderedByNewestQueryBuilder(): QueryBuilder
     {
-        return $this->findBy(array(), array('createdAt' => 'asc', 'updatedAt' => 'asc'));
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'ASC')
+            ->orderBy('p.updatedAt', 'ASC');
     }
+
     //    /**
     //     * @return Post[] Returns an array of Post objects
     //     */
