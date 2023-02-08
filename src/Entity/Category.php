@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -56,6 +57,12 @@ class Category
     public function getPosts(): Collection
     {
         return $this->posts;
+    }
+
+
+    public function getPostsNumber(): int
+    {
+        return $this->posts->count();
     }
 
     public function addPost(Post $post): self

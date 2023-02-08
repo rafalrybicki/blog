@@ -40,11 +40,18 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
-    public function createOrderedByNewestQueryBuilder(): QueryBuilder
+    public function createOrderedByNewestQueryBuilder($categoryId): QueryBuilder
     {
-        return $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
             ->orderBy('p.createdAt', 'ASC')
             ->orderBy('p.updatedAt', 'ASC');
+
+        if ($categoryId) {
+            $qb->andWhere('p.category = :categoryId')
+                ->setParameter('categoryId', $categoryId);
+        }
+
+        return $qb;
     }
 
     //    /**

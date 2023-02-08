@@ -10,3 +10,8 @@ body {
   color: #212529;
   margin-bottom: 30px;
 }
+
+a.active span.badge {
+  background-color: white !important;
+  color: black;
+}

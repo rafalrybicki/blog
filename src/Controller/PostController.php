@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -23,16 +24,17 @@ class PostController extends AbstractController
     }
 
     #[Route('/{page<\d+>}', name: 'app_post_index', methods: ['GET'])]
-    public function index(int $page = 1): Response
+    public function index(CategoryRepository $categories, Request $request, int $page = 1): Response
     {
-        $queryBuilder = $this->postRepository->createOrderedByNewestQueryBuilder();
+        $queryBuilder = $this->postRepository->createOrderedByNewestQueryBuilder($request->query->get('category'));
 
         $pagerfanta = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pagerfanta->setCurrentPage($page);
-        $pagerfanta->setMaxPerPage(12);
+        $pagerfanta->setMaxPerPage(9);
 
         return $this->render('post/index.html.twig', [
             'pager' => $pagerfanta,
+            'categories' => $categories->findAll()
         ]);
     }
 

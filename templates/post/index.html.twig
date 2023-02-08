@@ -5,23 +5,42 @@
 {% block body %}
     <h1>Posts</h1>
 
-    <div class="justify-content-between card-group">
-        {% for post in pager %}
-            <a href="{{ path('app_post_show', {'slug': post.slug}) }}" class="link-card">
-                <div class="card h-100" style="width: 18rem;">
-                    <img src="https://bi.im-g.pl/im/57/82/1b/z28845911ID,Pilne.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted">{{ post.category }}</h6>
-                        <p class="card-text">{{ post.title }}</p>
+    <div class="row">
+        <div class="justify-content-between card-group col-9">
+            {% for post in pager %}
+                <a href="{{ path('app_post_show', {'slug': post.slug, 'abc': 123}) }}" class="link-card">
+                    <div class="card h-100" style="width: 18rem;">
+                        <img src="https://bi.im-g.pl/im/57/82/1b/z28845911ID,Pilne.jpg" class="card-img-top">
+                        <div class="card-body">
+                            {% if not app.request.get('category') %}
+                                <h6 class="card-subtitle mb-2 text-muted">{{ post.category }}</h6>
+                            {% endif %}
+                            <p class="card-text">{{ post.title }}</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        {% else %}
-            <p>no records found</p>
-        {% endfor %}
+                </a>
+            {% else %}
+                <p>no records found</p>
+            {% endfor %}
+        </div>
+        <div class="col-3">
+            <h4>Categories:</h4>
+            <ul class="list-group">
+            {% for category in categories %}
+                <a href="{{ path('app_post_index', { 'category': category.id }) }}"
+                   class="list-group-item {{ isActive(app.request.get('category'), category.id) }}"
+                >
+                    <li class="d-flex justify-content-between align-items-center">
+                        {{ category.name }}
+                        <span class="badge bg-primary rounded-pill">
+                            {{ category.postsNumber }}
+                        </span>
+                    </li>
+                </a>
+            {% endfor %}
+            </ul>
+        </div>
     </div>
 
     {{ pagerfanta(pager) }}
-
-    <a href="{{ path('app_post_new') }}">Create new</a>
 {% endblock %}
