@@ -14,6 +14,35 @@
         {% endblock %}
     </head>
     <body>
+        <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="{{ path('app_post_index') }}">
+                    Blog
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav">
+                        {% if app.user %}
+                            <li class="nav-item ms-auto">
+                                <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item ms-auto">
+                                <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            {# {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %} #}
+        </nav>
         <div class="container">
             {% block body %}{% endblock %}
         </div>
