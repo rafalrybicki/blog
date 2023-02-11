@@ -39,6 +39,9 @@ class Post
     #[Gedmo\Slug(fields: ['title'])]
     private ?string $slug = null;
 
+    #[ORM\Column]
+    private ?bool $isApproved = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -100,6 +103,18 @@ class Post
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function isIsApproved(): ?bool
+    {
+        return $this->isApproved;
+    }
+
+    public function setIsApproved(bool $isApproved): self
+    {
+        $this->isApproved = $isApproved;
 
         return $this;
     }
