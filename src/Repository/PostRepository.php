@@ -54,6 +54,16 @@ class PostRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    public function numberOfUnapproved()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.isApproved = :val')
+            ->setParameter('val', false)
+            ->select('count(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return Post[] Returns an array of Post objects
     //     */
