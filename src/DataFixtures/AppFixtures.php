@@ -14,8 +14,14 @@ class AppFixtures extends Fixture
     {
         UserFactory::createOne([
             'email' => 'admin@example.com',
-            'roles' => ['ROLE_ADMIN'],
+            'roles' => ['ROLE_ADMIN', 'ROLE_MODERATOR'],
             'username' => 'admin',
+        ]);
+
+        UserFactory::createOne([
+            'email' => 'moderator@example.com',
+            'roles' => ['ROLE_MODERATOR'],
+            'username' => 'moderator',
         ]);
 
         UserFactory::createOne([
@@ -27,6 +33,12 @@ class AppFixtures extends Fixture
 
         CategoryFactory::createMany(10);
 
-        PostFactory::createMany(100);
+        PostFactory::createMany(30);
+
+        PostFactory::createMany(120, function () {
+            return [
+                'isApproved' => true
+            ];
+        });
     }
 }
