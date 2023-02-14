@@ -65,6 +65,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud("Unapproved posts $number", 'fa fa-file-circle-question', Post::class)
             ->setController(PostPendingApprovalCrudController::class)
             ->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('My posts', 'fa fa-file-pen', Post::class)
+            ->setController(PostBelongingToUserCrudController::class);
         yield MenuItem::section();
         yield MenuItem::linkToUrl('Go to blog', 'fas fa-home', $this->generateUrl('app_post_index'));
     }
