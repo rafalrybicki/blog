@@ -23,11 +23,11 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[IsGranted('ROLE_USER')]
-    #[Route('/admin', name: 'admin')]
+    #[Route('/dashboard', name: 'app_dashboard')]
     public function index(): Response
     {
         // return parent::index();
-        return $this->render('admin/index.html.twig');
+        return $this->render('dashboard/index.html.twig');
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -49,7 +49,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Admin');
+            ->setTitle('Dashboard');
     }
 
     public function configureMenuItems(): iterable
