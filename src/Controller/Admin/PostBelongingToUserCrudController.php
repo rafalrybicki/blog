@@ -6,10 +6,7 @@ use App\Entity\Post;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -20,34 +17,29 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[IsGranted('ROLE_USER')]
-class PostBelongingToUserCrudController extends AbstractCrudController
+class PostBelongingToUserCrudController extends PostCrudController
 {
   public static function getEntityFqcn(): string
   {
     return Post::class;
   }
 
-  public function configureActions(Actions $actions): Actions
-  {
-    return $actions->setPermission(Action::DELETE, 'ROLE_ADMIN');
-  }
-
   public function configureCrud(Crud $crud): Crud
   {
-    return $crud->setPageTitle('index', 'My posts');
+    return parent::configureCrud($crud)->setPageTitle('index', 'My posts');
   }
 
-  public function configureFields(string $pageName): iterable
-  {
-    return [
-      TextField::new('title'),
-      BooleanField::new('isApproved')->renderAsSwitch(false)->onlyOnIndex(),
-      AssociationField::new('category'),
-      DateTimeField::new('createdAt')->onlyOnIndex(),
-      DateTimeField::new('updatedAt')->onlyOnIndex(),
-      TextEditorField::new('content')
-    ];
-  }
+  // public function configureFields(string $pageName): iterable
+  // {
+  //   return [
+  //     TextField::new('title'),
+  //     BooleanField::new('isApproved')->renderAsSwitch(false)->onlyOnIndex(),
+  //     AssociationField::new('category'),
+  //     DateTimeField::new('createdAt')->onlyOnIndex(),
+  //     DateTimeField::new('updatedAt')->onlyOnIndex(),
+  //     TextEditorField::new('content')->setTemplatePath('dashboard/raw_text_editor.html.twig')
+  //   ];
+  // }
 
   public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
   {
