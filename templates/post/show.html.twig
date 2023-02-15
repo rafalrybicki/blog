@@ -10,11 +10,7 @@
         <a href="#">{{ post.author }}</a>
     </p>
 
-    <p>{{ post.content }}</p>
+    {{ post.content|raw }}
 
-    <a href="{{ path('app_post_index') }}">back to list</a>
-
-    {# <a href="{{ path('app_post_edit', {'id': post.id}) }}">edit</a>
-
-    {{ include('post/_delete_form.html.twig') }} #}
+    <button class="btn btn-primary mb-4" onClick="window.history.back()">Go back</button>
 {% endblock %}
