@@ -24,26 +24,45 @@ class PostCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        return $actions->setPermission(Action::DELETE, 'ROLE_ADMIN');
+        $viewShow = Action::new('Show')
+            ->setCssClass('btn btn-success')
+            ->setHtmlAttributes(['type' => 'button'])
+            ->linkToRoute('app_post_show', fn (Post $post) => [
+                'slug' => $post->getSlug()
+            ]);
+        return $actions
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
+            ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
+                return $action
+                    ->addCssClass('btn btn-primary');
+            })
+            ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
+                return $action
+                    ->addCssClass('btn btn-danger ms-2 text-white');
+            })
+            ->add(Crud::PAGE_INDEX, $viewShow);
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setDefaultSort([
+                'author.username' => 'ASC',
+            ])
             ->setPageTitle('index', 'Approved posts');
     }
 
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('title'),
+            TextField::new('title')->setColumns(6),
+            AssociationField::new('author')->onlyOnIndex(),
+            AssociationField::new('category')->setColumns(6),
             BooleanField::new('isApproved')->hideOnIndex(),
-            AssociationField::new('author'),
-            AssociationField::new('category'),
-            DateTimeField::new('createdAt'),
-            DateTimeField::new('updatedAt'),
-            TextEditorField::new('content')->onlyOnForms()
+            DateTimeField::new('createdAt')->onlyOnIndex(),
+            DateTimeField::new('updatedAt')->onlyOnIndex(),
+            TextEditorField::new('content')->onlyOnForms()->setColumns(12)
         ];
     }
 }

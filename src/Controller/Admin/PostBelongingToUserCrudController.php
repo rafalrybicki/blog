@@ -29,17 +29,17 @@ class PostBelongingToUserCrudController extends PostCrudController
     return parent::configureCrud($crud)->setPageTitle('index', 'My posts');
   }
 
-  // public function configureFields(string $pageName): iterable
-  // {
-  //   return [
-  //     TextField::new('title'),
-  //     BooleanField::new('isApproved')->renderAsSwitch(false)->onlyOnIndex(),
-  //     AssociationField::new('category'),
-  //     DateTimeField::new('createdAt')->onlyOnIndex(),
-  //     DateTimeField::new('updatedAt')->onlyOnIndex(),
-  //     TextEditorField::new('content')->setTemplatePath('dashboard/raw_text_editor.html.twig')
-  //   ];
-  // }
+  public function configureFields(string $pageName): iterable
+  {
+    return [
+      TextField::new('title')->setColumns(6),
+      BooleanField::new('isApproved')->renderAsSwitch(false)->onlyOnIndex(),
+      AssociationField::new('category')->setColumns(6),
+      DateTimeField::new('createdAt')->onlyOnIndex(),
+      DateTimeField::new('updatedAt')->onlyOnIndex(),
+      TextEditorField::new('content')->onlyOnForms()->setColumns(12)
+    ];
+  }
 
   public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
   {
