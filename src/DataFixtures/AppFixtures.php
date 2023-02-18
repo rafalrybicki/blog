@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Factory\CategoryFactory;
+use App\Factory\CommentFactory;
 use App\Factory\PostFactory;
 use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -40,5 +41,7 @@ class AppFixtures extends Fixture
                 'isApproved' => true
             ];
         });
+
+        CommentFactory::createMany(400);
     }
 }
