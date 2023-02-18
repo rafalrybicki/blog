@@ -19,3 +19,17 @@ a.active span.badge {
   background-color: white !important;
   color: black;
 }
+
+.comment {
+  margin-bottom: 25px;
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  .author {
+    font-size: 15px;
+    font-weight: 500;
+    margin-right: 8px;
+  }
+}

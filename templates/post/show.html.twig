@@ -15,9 +15,17 @@
     <div>
         <h2>Comments</h2>
 
-        {{ form_start(form) }}
-            {{ form_widget(form, {'attr': {'class': 'row'}}) }}
-        {{ form_end(form) }}
+        {% for comment in post.comments %}
+            <div class="comment">
+                <p class="text-black text-opacity-90">{{ comment.content }}</p>
+                <span class="author">{{ comment.author }}</span>
+                <small class="text-muted">
+                    {{ comment.createdAt|date('F j, Y') }} at {{ comment.createdAt|date('g:i a') }}
+                </small>
+            </div>
+        {% endfor %}
+
+        {{ form(form, { 'attr': { 'class': 'row' } }) }}
     </div>
 
     <button class="btn btn-primary mb-4" onClick="window.history.back()">Go back</button>

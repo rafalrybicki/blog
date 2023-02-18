@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Post;
-use App\Form\PostType;
+use App\Form\CommentType;
 use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -41,8 +42,17 @@ class PostController extends AbstractController
     #[Route('/{slug}', name: 'app_post_show', methods: ['GET'])]
     public function show(Post $post): Response
     {
-        return $this->render('post/show.html.twig', [
+        $comment = new Comment();
+
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            $comment->setIsApproved(true);
+        }
+
+        $form = $this->createForm(CommentType::class, $comment);
+
+        return $this->renderForm('post/show.html.twig', [
             'post' => $post,
+            'form' => $form
         ]);
     }
 }
