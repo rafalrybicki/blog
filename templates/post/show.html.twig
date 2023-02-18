@@ -12,5 +12,13 @@
 
     {{ post.content|raw }}
 
+    <div>
+        <h2>Comments</h2>
+
+        {{ form_start(form) }}
+            {{ form_widget(form, {'attr': {'class': 'row'}}) }}
+        {{ form_end(form) }}
+    </div>
+
     <button class="btn btn-primary mb-4" onClick="window.history.back()">Go back</button>
 {% endblock %}
