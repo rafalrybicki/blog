@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\PostRepository;
@@ -67,6 +68,7 @@ class DashboardController extends AbstractDashboardController
             ->setPermission('ROLE_MODERATOR');
         yield MenuItem::linkToCrud('My posts', 'fa fa-file-pen', Post::class)
             ->setController(PostBelongingToUserCrudController::class);
+        yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class)->setPermission('ROLE_MODERATOR');
         yield MenuItem::section();
         yield MenuItem::linkToUrl('Go to blog', 'fas fa-home', $this->generateUrl('app_post_index'));
     }

@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -64,6 +65,7 @@ class PostCrudController extends AbstractCrudController
             TextField::new('title')->setColumns(6),
             AssociationField::new('author')->onlyOnIndex(),
             AssociationField::new('category')->setColumns(6),
+            CollectionField::new('comments')->onlyOnIndex(),
             BooleanField::new('isApproved')->hideOnIndex(),
             DateTimeField::new('createdAt')->onlyOnIndex(),
             DateTimeField::new('updatedAt')->onlyOnIndex(),
@@ -77,6 +79,8 @@ class PostCrudController extends AbstractCrudController
             ->innerJoin('entity.category', 'category')
             ->addSelect('category')
             ->innerJoin('entity.author', 'user')
-            ->addSelect('user');
+            ->addSelect('user')
+            ->innerJoin('entity.comments', 'comment')
+            ->addSelect('comment');
     }
 }

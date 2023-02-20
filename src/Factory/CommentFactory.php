@@ -51,7 +51,6 @@ final class CommentFactory extends ModelFactory
             'content' => self::faker()->text(rand(5, 255)),
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTimeBetween('-1 week', '-1 hour')),
             'email' => self::faker()->email(),
-            'isApproved' => self::faker()->boolean(),
             'post' => PostFactory::random()
         ];
     }

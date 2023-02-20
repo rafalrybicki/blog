@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -35,6 +36,7 @@ class PostBelongingToUserCrudController extends PostCrudController
       TextField::new('title')->setColumns(6),
       BooleanField::new('isApproved')->renderAsSwitch(false)->onlyOnIndex(),
       AssociationField::new('category')->setColumns(6),
+      CollectionField::new('comments')->onlyOnIndex(),
       DateTimeField::new('createdAt')->onlyOnIndex(),
       DateTimeField::new('updatedAt')->onlyOnIndex(),
       TextEditorField::new('content')->onlyOnForms()->setColumns(12)

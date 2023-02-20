@@ -42,6 +42,12 @@ class AppFixtures extends Fixture
             ];
         });
 
-        CommentFactory::createMany(400);
+        CommentFactory::createMany(30);
+
+        CommentFactory::createMany(360, function () {
+            return [
+                'isApproved' => true
+            ];
+        });
     }
 }
