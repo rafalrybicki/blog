@@ -6,7 +6,9 @@ use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
+use DateTimeImmutable;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,16 +41,36 @@ class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}', name: 'app_post_show', methods: ['GET'])]
-    public function show(Post $post): Response
+    #[Route('/{slug}', name: 'app_post_show', methods: ['GET', 'POST'])]
+    public function show(string $slug, PostRepository $postRepository, CommentRepository $commentRepository, Request $request): Response
     {
+        $post = $postRepository->findWithComments($slug);
         $comment = new Comment();
 
-        if ($this->isGranted('ROLE_MODERATOR')) {
-            $comment->setIsApproved(true);
-        }
-
         $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new DateTimeImmutable());
+            $comment->setPost($post);
+            $notice = '';
+
+            if ($this->isGranted('ROLE_MODERATOR')) {
+                $comment->setIsApproved(true);
+                $notice = 'Your comment has been added';
+            } else {
+                $notice = 'Your comment is pending approval';
+            }
+
+            $commentRepository->save($comment, true);
+
+            $this->addFlash(
+                'notice',
+                $notice
+            );
+
+            return $this->redirectToRoute('app_post_show', ['slug' => $post->getSlug()]);
+        }
 
         return $this->renderForm('post/show.html.twig', [
             'post' => $post,

@@ -66,6 +66,33 @@ class PostRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    public function findWithComments($slug)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->innerJoin('p.comments', 'c')
+            ->addSelect('c')
+            ->andWhere('c.isApproved = :val')
+            ->orderBy('c.createdAt', 'ASC')
+            ->setParameter('val', true)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    // public function findOneByIdJoinedToPost(int $postId): ?Comment
+    // {
+    //     return $this->createQueryBuilder('c')
+    //         ->andWhere('c.isApproved = :val')
+    //         ->setParameter('val', true)
+    //         ->andWhere('c.post = :val')
+    //         ->setParameter('val', $postId)
+    //         ->orderBy('c.createdAt', 'ASC')
+    //         ->orderBy('c.updatedAt', 'ASC')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
     //    /**
     //     * @return Post[] Returns an array of Post objects
     //     */
