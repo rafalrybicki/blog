@@ -39,14 +39,15 @@
                     </ul>
                 </div>
             </div>
-
-            {# {% if app.user %}
-                <div class="mb-3">
-                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-                </div>
-            {% endif %} #}
         </nav>
         <div class="container">
+            {% for notice in app.flashes('notice') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ notice }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
             {% block body %}{% endblock %}
         </div>
     </body>
